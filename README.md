@@ -1,8 +1,11 @@
 Building a small Web Application to mantain your schedule :-
 
 1) You should be able to add events or appointments.
+
 2) All events or appointments should be categorized into various types.
+
 3) Should have basic validations like not allowing more than one event at a time.
+
 4) Should have option to link friends to an event or appointments.
 
 While building the application think about more features that you may want to add.
