@@ -1,0 +1,207 @@
+//file name is: createevent.php
+<?php
+//I want to do as much as possible before anything is sent to browser
+$validForm = true;
+$formIsEmpty = true;
+
+if (isset($_GET["Creator"])) {
+	$Creator=$_GET["Creator"];
+	$formIsEmpty = false; //value set, form is not empty
+} else {
+	$Creator="";
+	$validForm = false;
+}
+
+if (isset($_GET["EventName"])) {
+	$EventName=$_GET["EventName"];
+	$formIsEmpty = false; //value set, form is not empty
+} else {
+	$EventName="";
+	$validForm = false;
+}
+
+if (isset($_GET["Date"])) {
+	$Date=$_GET["Date"];
+	$formIsEmpty = false; //value set, form is not empty
+} else {
+	$Date="";
+	$validForm = false;
+}
+
+if (isset($_GET["Place"])) {
+	$Place=$_GET["Place"];
+	$formIsEmpty = false; //value set, form is not empty
+} else {
+	$Place="";
+	$validForm = false;
+}
+
+if (isset($_GET["Description"])) {
+	$Description=$_GET["Description"];
+	$formIsEmpty = false; //value set, form is not empty
+} else {
+	$Description="";
+	$validForm = false;
+}
+
+
+if (is_numeric($Creator)) {
+	$messageToUserAboutCreator = "Name must not be numeric";
+	$validForm = false;
+} else {
+	if (strlen($Creator)<3) {
+		$messageToUserAboutCreator = "Name must be at least 3 characters";
+		$validForm = false;
+	} else if (strlen($Creator)>100) {
+		$messageToUserAboutCreator = "Name must be less than 100 characters";
+		$validForm = false;
+	} else {
+		$messageToUserAboutCreator = "";
+	}
+}
+if (is_numeric($EventName)) {
+	$messageToUserAboutEventName = "Name of Event must not be numeric";
+	$validForm = false;
+} else {
+	if (strlen($EventName)<5) {
+		$messageToUserAboutEventName = "The Name of the Event must be at least 5 characters";
+		$validForm = false;
+	} else if (strlen($EventName)>100) {
+		$messageToUserAboutEventName = "The Name of the Event must be less than 100 characters";
+		$validForm = false;
+	} else {
+		$messageToUserAboutEventName = "";
+	}
+}
+if (is_numeric($Date)) {
+	$messageToUserAboutDate = "Date must not be numeric";
+	$validForm = false;
+} else {
+	if (strlen($Date)<5) {
+		$messageToUserAboutDate = "Date must be at least 5 characters";
+		$validForm = false;
+	} else if (strlen($Date)>100) {
+		$messageToUserAboutDate = "Date must be less than 100 characters";
+		$validForm = false;
+	} else {
+		$messageToUserAboutDate = "";
+	}
+}
+if (is_numeric($Place)) {
+	$messageToUserAboutPlace = "Name of Place must not be numeric";
+	$validForm = false;
+} else {
+	if (strlen($Place)<5) {
+		$messageToUserAboutPlace = "Name of Place must be at least 5 characters";
+		$validForm = false;
+	} else if (strlen($Place)>100) {
+		$messageToUserAboutPlace = "Name of Place must be less than 100 characters";
+		$validForm = false;
+	} else {
+		$messageToUserAboutPlace = "";
+	}
+}
+if (is_numeric($Description)) {
+	$messageToUserAboutEmailAddress = "The description must not be numeric";
+	$validForm = false;
+} else {
+	if (strlen($Description)<5) {
+		$messageToUserAboutDescription = "The description must be at least 5 characters";
+		$validForm = false;
+	} else if (strlen($Description)>100) {
+		$messageToUserAboutDescription = "The description must be less than 100 characters";
+		$validForm = false;
+	} else {
+		$messageToUserAboutDescription = "";
+	}
+}
+
+?>
+<!DOCTYPE html>
+<html>
+<body>
+<?php
+if ($validForm==false or $formIsEmpty) {
+//This is shown if user entered an invalid value
+?>
+<form action="createevent.php" method="get"> 
+
+Person's Name: <input type="text" name="Creator" value="<?php
+echo $Creator;
+?>"><span style="color: red;"><?php
+if (!$formIsEmpty) {
+	echo $messageToUserAboutCreator;
+}
+?></span></p>
+Event Name: <input type="text" name="EventName" value="<?php
+echo $EventName;
+?>"><span style="color: red;"><?php
+if (!$formIsEmpty) {
+	echo $messageToUserAboutEventName;
+}
+?></span></p>
+Date: <input type="text" name="Date" value="<?php
+echo $Date; 
+?>"><span style="color: red;"><?php
+if (!$formIsEmpty) {
+	echo $messageToUserAboutDate;
+}
+?></span></p>
+Place: <input type="text" name="Place" value="<?php
+echo $Place;
+?>"><span style="color: red;"><?php
+if (!$formIsEmpty) {
+	echo $messageToUserAboutPlace;
+}
+?></span></p>
+Description: <input type="text" name="Description" value="<?php
+echo $Description;
+?>"><span style="color: red;"><?php
+if (!$formIsEmpty) {
+	echo $messageToUserAboutDescription;
+}
+?></span></p>
+<p>
+Name: <select name="EventType"> 
+    <option value="private">Private</option>
+    <option value="public">Public</option>
+    </select><br>
+</p>
+<button type="submit">Submit</button> </p>
+<a href="EventOrganizer.php">Back To The Main Page </a> </p>
+</form>
+<?php
+} else {
+	$EventType=$_GET['EventType'];
+?>
+	
+	<?
+	$conn = mysqli_connect("db154.pair.com","ecook019_4_w","7btLJMmr","ecook019_EventList");
+	if (mysqli_connect_errno()) {
+	echo "Connect Failed: ". mysqli_connect_error(); 
+	}
+	$newEventID = rand(1,10000);
+	
+	$sql = "INSERT INTO EventList (EventID, EventType, Creator, EventName, Date, Place, Description)";
+	$sql .= " VALUES (";
+	$sql .= mysqli_real_escape_string($conn, $newEventID);
+	$sql .= ", '". mysqli_real_escape_string($conn, $EventType) ."'";
+	//always escape everything that a user entered
+	$sql .= ", '". mysqli_real_escape_string($conn, $Creator) ."'";
+	$sql .= ", '". mysqli_real_escape_string($conn, $EventName) ."'";
+	$sql .= ", '". mysqli_real_escape_string($conn, $Date) ."'";
+	$sql .= ", '". mysqli_real_escape_string($conn, $Place) ."'";
+	$sql .= ", '". mysqli_real_escape_string($conn, $Description) ."'";
+	$sql .= ");";
+	
+	$res = mysqli_query($conn, $sql);
+	if ($res) {
+		echo "Command Successfully Executed.";
+	} else {
+		echo "Error in SQL: ". mysqli_error($conn);
+	}
+	header("Location: EventOrganizer.php"); 
+}
+?>
+</body>
+</html>
