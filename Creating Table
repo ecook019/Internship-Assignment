@@ -1,3 +1,4 @@
+//file name is: CreateEventTable.php
 <?php 
 $conn = mysqli_connect("db154.pair.com","ecook019_4","FhEDv7SX","ecook019_EventList");
 if (mysqli_connect_errno()) {
