@@ -1,0 +1,44 @@
+//filename: deleteEvent.php
+<?php
+if (isset($_POST["Confirm"])) {
+	$confirm = htmlentities($_POST["Confirm"]);
+	if ($confirm=="yes"){
+		//time to delete!
+		if (isset($_POST["EventID"])) {
+			$eventID=htmlentities($_POST["EventID"]);
+		}
+		if (isset($_POST["EventName"])) {
+			$name=htmlentities($_POST["EventName"]);
+		}
+		echo "I am now deleting: " . $name;
+		
+		$conn = mysqli_connect("db154.pair.com","ecook019_4_w","7btLJMmr","ecook019_EventList");
+		if (mysqli_connect_errno()) {
+		echo "Connect Failed: ". mysqli_connect_error(); 
+		}
+		$sql = " DELETE FROM EventList"; 
+		//alarm! without a WHERE clause you delete every record!
+		$sql .= " WHERE EventID=";
+		$sql .= mysqli_real_escape_string($conn, $eventID);
+		$sql .=";";
+		echo "</p>" . $sql;
+		$res = mysqli_query($conn, $sql);
+		if ($res) {
+			echo "Command Successfully Executed.";
+		} else {
+			echo "Error in SQL: " . mysqli_error($conn);
+		}
+	    
+		header("Location: eventdeletelist.php"); 
+	}
+} 
+echo "You want to delete Event: ";
+echo htmlentities($_POST["EventName"]);
+echo "<form method='post' action='deleteEvent.php'>";
+echo "<input type='hidden' name='EventID' value='";
+echo htmlentities($_POST["EventID"]) ."'>";
+echo "<input type='checkbox' name='Confirm' value='yes'>";
+echo "I am sure  ";
+echo "<button type='submit'>Confirm</button>";
+echo "</form>";
+?>
