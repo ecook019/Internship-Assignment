@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+Welcome to Your Event Organizer!
+</p>
+<u>Select Your Options Here<u/> </p>
+
+<a href="createevent.php">Create Events </a>
+</p>
+
+<a href="showeventlist.php">Show Events </a>
+</p>
+
+<a href="eventdeletelist.php">Delete Events </a>
+</p>
+
+<a href="showfriendevents.php">Link to Friend's Events </a> 
+</p>
+
+</form>
+</body>
+</html>
