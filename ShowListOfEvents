@@ -1,0 +1,38 @@
+//file name: showeventlist.php
+<?php 
+
+$conn = mysqli_connect("db154.pair.com","ecook019_4_r","WArDQxqV","ecook019_EventList");
+if (mysqli_connect_errno()) {
+	echo "Connect Failed: ". mysqli_connect_error(); 
+}
+$sql = " SELECT EventType, Creator, EventName, Date, Place, Description"; //don't use * to show all columns
+$sql .= " FROM EventList;";
+$result = $conn->query($sql); //$result is a dataset
+if (!$result) {
+	echo "No records returned: </p> " . mysqli_error($conn);
+} else {
+	echo "</p>";
+	if ($result->num_rows > 0) { //if there are rows in the dataset...
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "EventType: "; 
+		//don't forget to escape before outputting to screen
+		echo htmlentities($row["EventType"]);
+		echo "</br>Person's Name: ";
+		echo htmlentities($row["Creator"]);
+		echo "</br>EventName: ";
+		echo htmlentities($row["EventName"]);
+		echo "</br>Date: ";
+		echo htmlentities($row["Date"]);
+		echo "</br>Place: ";
+		echo htmlentities($row["Place"]);
+		echo "</br>Description: ";
+		echo htmlentities($row["Description"]);
+		echo "</p>";
+    }
+} else {
+    echo "No results";
+	}
+}?>
+<a href="EventOrganizer.php">Back To The Main Page </a>
+
